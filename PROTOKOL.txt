@@ -1,0 +1,63 @@
+FILE SERVER
+TUJUAN: melayani client dalam request file server
+
+ATURAN PROTOKOL:
+- Client harus mengirimkan request dalam bentuk string.
+- String harus dalam format:
+  REQUEST spasi PARAMETER
+- PARAMETER dapat terdiri dari satu atau lebih nilai yang dipisahkan spasi.
+- Semua result diberikan dalam format JSON dan diakhiri dengan karakter ASCII #13#10#13#10 (atau "\r\n\r\n").
+
+REQUEST YANG DILAYANI:
+
+1. LIST
+* TUJUAN: mendapatkan daftar seluruh file yang tersedia di server.
+* PARAMETER: tidak ada.
+* RESULT:
+  - BERHASIL:
+    - status: OK
+    - data: list nama file (array)
+  - GAGAL:
+    - status: ERROR
+    - data: pesan kesalahan
+
+2. GET
+* TUJUAN: mendapatkan isi file berdasarkan nama file yang disebutkan dalam parameter.
+* PARAMETER:
+  - PARAMETER1: nama file
+* RESULT:
+  - BERHASIL:
+    - status: OK
+    - data_namafile: nama file yang diminta
+    - data_file: isi file dalam format base64
+  - GAGAL:
+    - status: ERROR
+    - data: pesan kesalahan
+
+3. UPLOAD
+* TUJUAN: mengunggah file baru ke server.
+* PARAMETER:
+  - PARAMETER1: nama file yang akan disimpan
+  - PARAMETER2: isi file dalam format base64
+* RESULT:
+  - BERHASIL:
+    - status: OK
+    - data: pesan konfirmasi berhasil upload
+  - GAGAL:
+    - status: ERROR
+    - data: pesan kesalahan
+
+4. DELETE
+* TUJUAN: menghapus file di server.
+* PARAMETER:
+  - PARAMETER1: nama file yang akan dihapus
+* RESULT:
+  - BERHASIL:
+    - status: OK
+    - data: pesan konfirmasi berhasil hapus
+  - GAGAL:
+    - status: ERROR
+    - data: pesan kesalahan
+
+PENJELASAN TAMBAHAN:
+Protokol ini dirancang untuk mendukung operasi CRUD penuh pada file server dengan format komunikasi berbasis string yang sederhana dan konsisten. Pengiriman data file dalam operasi UPLOAD dan GET menggunakan encoding base64 agar data biner dapat dikirimkan secara aman melalui protokol berbasis teks. Server dan client juga menggunakan terminator pesan "\r\n\r\n" untuk menandai batas akhir sebuah request atau response agar komunikasi dapat sinkron dan terstruktur dengan baik.
